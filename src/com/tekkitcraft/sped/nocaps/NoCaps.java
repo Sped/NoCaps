@@ -3,6 +3,7 @@ package com.tekkitcraft.sped.nocaps;
 import java.io.File;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -38,6 +39,7 @@ public class NoCaps extends JavaPlugin implements Listener {
 
         addDefault("msg.caps", "§4Please don't caps :-(");//add and set default
         addDefault("msg.minimumlenght", "5");
+        addDefault("command.executeoncaps", "/warn <sender> NoCaps: Caps");
 
         config.options().copyDefaults(true);//copy the default from above
         saveConfig();//write them to file
@@ -59,6 +61,8 @@ public class NoCaps extends JavaPlugin implements Listener {
 		if(msg.toUpperCase().equals(msg) && (msg.length() >= config.getInt("msg.minmumlength")) && !msg.contains("...") && !msg.contains("-") && !msg.contains("^") && !sender.hasPermission("nocaps.caps")) { //detect if msg is full caps on a shitty way
 			event.setMessage(msg.substring(0,1).toUpperCase()+msg.substring(1).toLowerCase());
 			sender.sendMessage(config.getString("msg.caps"));
+			String command = config.getString("command.executeoncaps").replaceAll("<sender>" , sender.getDisplayName());
+			getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
 			
 		}
 	}
