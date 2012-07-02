@@ -11,6 +11,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * @author Sped (Whattehp406, loled2)
+ */
+
 public class NoCaps extends JavaPlugin implements Listener {
 	
 	Logger log = Logger.getLogger("Minecraft"); //Logger to print stuff in console
@@ -33,6 +37,7 @@ public class NoCaps extends JavaPlugin implements Listener {
         config = getConfig();//get the configuration
 
         addDefault("msg.caps", "§4Please don't caps :-(");//add and set default
+        addDefault("msg.minimumlenght", "5");
 
         config.options().copyDefaults(true);//copy the default from above
         saveConfig();//write them to file
@@ -47,14 +52,11 @@ public class NoCaps extends JavaPlugin implements Listener {
     }
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onPlayerChat(PlayerChatEvent event) {
-		String msg = event.getMessage();
-		Player sender = event.getPlayer();
+	public void onPlayerChat(PlayerChatEvent event) { //called when player chats.
+		String msg = event.getMessage(); //The chat message the player sent
+		Player sender = event.getPlayer(); //The player who sent the chat message
 		
-//		if(msg.startsWith("&")) { //detect if a player is trying to color chat *sigh*
-//			
-//		}
-		if(msg.toUpperCase().equals(msg) && (msg.length() >= 4) && !msg.contains("...") && !msg.contains("-") && !msg.contains("^") && !sender.hasPermission("nocaps.caps")) { //detect if msg is full caps on a shitty way
+		if(msg.toUpperCase().equals(msg) && (msg.length() >= config.getInt("msg.minmumlength")) && !msg.contains("...") && !msg.contains("-") && !msg.contains("^") && !sender.hasPermission("nocaps.caps")) { //detect if msg is full caps on a shitty way
 			event.setMessage(msg.substring(0,1).toUpperCase()+msg.substring(1).toLowerCase());
 			sender.sendMessage(config.getString("msg.caps"));
 			
