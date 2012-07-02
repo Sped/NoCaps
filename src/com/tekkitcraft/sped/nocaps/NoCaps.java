@@ -37,7 +37,7 @@ public class NoCaps extends JavaPlugin implements Listener {
         config = getConfig(); //get the configuration
 
         addDefault("msg.caps", "§4Please don't caps :-("); //add and set default
-        addDefault("msg.minimumlenght", "5"); //Minimumlength to allow caps, to prevent "LOL" and small caps words from being detected as full caps
+        addDefault("msg.minimumlength", "5"); //Minimumlength to allow caps, to prevent "LOL" and small caps words from being detected as full caps
         addDefault("command.executeoncaps", "/warn <sender> NoCaps: Caps"); //command to execute on a full caps
         addDefault("command.enableexecution", "false"); //Defaults to false
 
@@ -58,7 +58,8 @@ public class NoCaps extends JavaPlugin implements Listener {
 		String msg = event.getMessage(); //The chat message the player sent
 		Player sender = event.getPlayer(); //The player who sent the chat message
 		
-		if(msg.toUpperCase().equals(msg) && (msg.length() >= config.getInt("msg.minmumlength")) && !msg.contains("...") && !msg.contains("-") && !msg.contains("^") && !sender.hasPermission("nocaps.caps")) { //detect if msg is full caps on a shitty way
+		
+		if(msg.toUpperCase().equals(msg) && (msg.length() >= 5) && ((!msg.contains("...") && !msg.contains("-") && !msg.contains("^"))) && !sender.hasPermission("nocaps.caps")) { //detect if msg is full caps on a shitty way
 			event.setMessage(msg.substring(0,1).toUpperCase()+msg.substring(1).toLowerCase()); //convert full caps into lowercase with first letter capitalised
 			sender.sendMessage(config.getString("msg.caps")); //send config message
 			if(config.getBoolean("command.enableexecution")) { //if commend execution is enabled
